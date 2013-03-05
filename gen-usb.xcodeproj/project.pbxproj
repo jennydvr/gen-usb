@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0007089B16E6770B00A3533C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0007089A16E6770B00A3533C /* main.cpp */; };
-		0007089D16E6770B00A3533C /* gen_usb.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0007089C16E6770B00A3533C /* gen_usb.1 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -18,7 +17,6 @@
 			dstPath = /usr/share/man/man1/;
 			dstSubfolderSpec = 0;
 			files = (
-				0007089D16E6770B00A3533C /* gen_usb.1 in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
@@ -27,7 +25,6 @@
 /* Begin PBXFileReference section */
 		0007089716E6770B00A3533C /* gen-usb */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "gen-usb"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0007089A16E6770B00A3533C /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		0007089C16E6770B00A3533C /* gen_usb.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = gen_usb.1; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,7 +58,6 @@
 			isa = PBXGroup;
 			children = (
 				0007089A16E6770B00A3533C /* main.cpp */,
-				0007089C16E6770B00A3533C /* gen_usb.1 */,
 			);
 			path = "gen-usb";
 			sourceTree = "<group>";
