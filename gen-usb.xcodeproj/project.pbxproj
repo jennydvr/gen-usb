@@ -32,8 +32,6 @@
 		00DBF7AB16E7A5A80048EC6A /* stringHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = stringHelper.cpp; sourceTree = "<group>"; };
 		00DBF7AC16E7A5A80048EC6A /* stringHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stringHelper.h; sourceTree = "<group>"; };
 		00DBF7AE16E7D3A90048EC6A /* crx.data.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = crx.data.txt; sourceTree = "<group>"; };
-		00DBF7B516E7DA250048EC6A /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
-		00DBF7B716E7DA720048EC6A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,8 +48,6 @@
 		0007088E16E6770B00A3533C = {
 			isa = PBXGroup;
 			children = (
-				00DBF7B716E7DA720048EC6A /* OpenGL.framework */,
-				00DBF7B516E7DA250048EC6A /* GLUT.framework */,
 				0007089916E6770B00A3533C /* gen-usb */,
 				0007089816E6770B00A3533C /* Products */,
 				00DBF7AE16E7D3A90048EC6A /* crx.data.txt */,
