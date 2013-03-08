@@ -8,9 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0007089B16E6770B00A3533C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0007089A16E6770B00A3533C /* main.cpp */; };
-		00DBF7A816E6C5000048EC6A /* chromosome.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00DBF7A616E6C5000048EC6A /* chromosome.cpp */; };
+		0077238416E9459E00D36D53 /* individual.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0077238216E9459E00D36D53 /* individual.cpp */; };
 		00DBF7AD16E7A5F60048EC6A /* stringHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00DBF7AB16E7A5A80048EC6A /* stringHelper.cpp */; };
-		00DBF7B416E7DA050048EC6A /* draftsman.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00DBF7B216E7DA050048EC6A /* draftsman.cpp */; };
 		00DBF7B616E7DA250048EC6A /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00DBF7B516E7DA250048EC6A /* GLUT.framework */; };
 		00DBF7B816E7DA720048EC6A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00DBF7B716E7DA720048EC6A /* OpenGL.framework */; };
 /* End PBXBuildFile section */
@@ -30,13 +29,11 @@
 /* Begin PBXFileReference section */
 		0007089716E6770B00A3533C /* gen-usb */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "gen-usb"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0007089A16E6770B00A3533C /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		00DBF7A616E6C5000048EC6A /* chromosome.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = chromosome.cpp; sourceTree = "<group>"; };
-		00DBF7A716E6C5000048EC6A /* chromosome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chromosome.h; sourceTree = "<group>"; };
+		0077238216E9459E00D36D53 /* individual.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = individual.cpp; sourceTree = "<group>"; };
+		0077238316E9459E00D36D53 /* individual.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = individual.h; sourceTree = "<group>"; };
 		00DBF7AB16E7A5A80048EC6A /* stringHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = stringHelper.cpp; sourceTree = "<group>"; };
 		00DBF7AC16E7A5A80048EC6A /* stringHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stringHelper.h; sourceTree = "<group>"; };
 		00DBF7AE16E7D3A90048EC6A /* crx.data.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = crx.data.txt; sourceTree = "<group>"; };
-		00DBF7B216E7DA050048EC6A /* draftsman.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = draftsman.cpp; sourceTree = "<group>"; };
-		00DBF7B316E7DA050048EC6A /* draftsman.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = draftsman.h; sourceTree = "<group>"; };
 		00DBF7B516E7DA250048EC6A /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		00DBF7B716E7DA720048EC6A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -79,10 +76,8 @@
 				00DBF7AB16E7A5A80048EC6A /* stringHelper.cpp */,
 				00DBF7AC16E7A5A80048EC6A /* stringHelper.h */,
 				0007089A16E6770B00A3533C /* main.cpp */,
-				00DBF7A616E6C5000048EC6A /* chromosome.cpp */,
-				00DBF7A716E6C5000048EC6A /* chromosome.h */,
-				00DBF7B216E7DA050048EC6A /* draftsman.cpp */,
-				00DBF7B316E7DA050048EC6A /* draftsman.h */,
+				0077238216E9459E00D36D53 /* individual.cpp */,
+				0077238316E9459E00D36D53 /* individual.h */,
 			);
 			path = "gen-usb";
 			sourceTree = "<group>";
@@ -139,9 +134,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				0007089B16E6770B00A3533C /* main.cpp in Sources */,
-				00DBF7A816E6C5000048EC6A /* chromosome.cpp in Sources */,
 				00DBF7AD16E7A5F60048EC6A /* stringHelper.cpp in Sources */,
-				00DBF7B416E7DA050048EC6A /* draftsman.cpp in Sources */,
+				0077238416E9459E00D36D53 /* individual.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
