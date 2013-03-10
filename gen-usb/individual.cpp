@@ -15,7 +15,7 @@ vector<bitset<66>> trainingExamples;
 Individual::Individual()
 {
     // Creo x reglas aleatorias
-    numRules = rand() % 4 + 1;
+    numRules = rand() % (MAXRULES - MINRULES + 1) + MINRULES;
     
     stringstream ss;
     int init = rand() % 2;
@@ -24,57 +24,137 @@ Individual::Individual()
         ss << createRule((i + init) % 2);
     
     rules = ss.str();
-    
-    
-    // Calculo el fitness
-    fitness = 0;
-    
-    for (int i = 0; i != trainingExamples.size(); ++i)
-        fitness += matches(trainingExamples[i]);
-    
-    fitness = fitness * 100.0 / (float)trainingExamples.size();
-    
-    fitness = fitness * fitness + PENALTY * numRules * 100 / 4;
+    fitness = numeric_limits<float>::min();
+}
+
+Individual::Individual(string r)
+{
+    rules = r;
+    numRules = (int)rules.size() / RULESIZE;
+    fitness = numeric_limits<float>::min();
 }
 
 string Individual::createRule(int type)
 {
-    unsigned int seed = (unsigned int)chrono::system_clock::now().time_since_epoch().count();
-    default_random_engine generator(seed);
-    uniform_int_distribution<int> distribution(0, 1);
-    
     stringstream ss;
     
-    for (int i = 0; i != 65; ++i)
-        ss << distribution(generator);
+    for (int i = 0; i != RULESIZE - 1; ++i)
+        ss << rand() % 2;
     
     ss << type;
     
     return ss.str();
 }
 
+void Individual::calculateFitness()
+{
+    fitness = 0;
+    
+    for (int i = 0; i != trainingExamples.size(); ++i)
+        fitness += matches(trainingExamples[i]);
+    
+    // Fitness = (% correctos) ^ 2
+    fitness = fitness * 100.0 / (float)trainingExamples.size();
+    fitness = fitness * fitness;
+    
+    // Penalizar
+    fitness -= PSIZE * numRules;    // Tamano
+    
+    for (int i = 0; i != numRules; ++i) {
+        string ss = rules.substr(i * RULESIZE, RULESIZE - 1);
+        fitness -= PONES * (float)count(ss.begin(), ss.end(), '1') * 100 / (float)RULESIZE;  // Unos
+    }
+}
+
 int Individual::matches(bitset<66> example)
 {
-    string x = example.to_string();
+    int count = 0;
+    
     for (int i = 0; i != numRules; ++i) {
-        
-        string y = rules.substr(i * 66, 66);
-        
-        bitset<66> rule = bitset<66>(rules.substr(i * 66, 66));
+        bitset<66> rule = bitset<66>(rules.substr(i * RULESIZE, RULESIZE));
         
         // No considerar las reglas que no clasifiquen a lo mismo
         if (rule[0] != example[0])
             continue;
         
         // E[n] == 1 => R[n] == 1
-        if ((int)(~example | rule).count() != 66)
+        if ((int)(~example | rule).count() != RULESIZE)
             return 0;
+        
+        count = 1;
     }
     
-    return 1;
+    return count;
 }
 
 float Individual::getFitness()
 {
+    if (fitness == numeric_limits<float>::min())
+        calculateFitness();
+    
     return fitness;
+}
+
+void Individual::mutate()
+{
+    // Mutacion puntual
+    int ind = rand() % rules.size();
+    rules[ind] = rules[ind] == '0' ? '1' : '0';
+}
+
+vector<Individual> Individual::crossover(Individual &p1, Individual &p2)
+{
+    // La mama es quien tiene menos reglas
+    if (p1.numRules > p2.numRules)
+        return twoPointCrossover(p2, p1);
+    
+    return twoPointCrossover(p1, p2);
+}
+
+vector<Individual> Individual::twoPointCrossover(Individual &mom, Individual &dad)
+{
+    vector<Individual> offspring;
+    int ma, mb, pa, pb;
+    
+    // Escoger dos puntos de corte
+    ma = rand() % ((int)mom.rules.size() - 2);
+    mb = ma + 1 + rand() % ((int)mom.rules.size() - 1 - (ma + 1));    // [a+1, size - 1 - a]
+    
+    // Escoger los puntos de corte en el otro padre
+    if (ma % RULESIZE >= mb % RULESIZE) {    // Calculo las reglas
+        
+        pa = rand() % (dad.numRules - 1);
+        pb = rand() % (dad.numRules - pa - 1) + pa + 1;
+        
+    } else {
+        
+        pa = rand() % dad.numRules;
+        pb = rand() % (dad.numRules - pa) + pa;
+        
+    }
+    
+    pa = ma % RULESIZE + RULESIZE * pa;     // Calculo los indices finales del papa
+    pb = mb % RULESIZE + RULESIZE * pb;
+    
+    
+    // Hacer el crossover final
+    stringstream s1, s2;
+    s1 << mom.rules.substr(0, ma + 1) << dad.rules.substr(pa + 1, pb - pa) << mom.rules.substr(mb + 1);
+    s2 << dad.rules.substr(0, pa + 1) << mom.rules.substr(ma + 1, mb - ma) << dad.rules.substr(pb + 1);
+    
+    offspring.push_back(Individual(s1.str()));
+    offspring.push_back(Individual(s2.str()));
+    
+    return offspring;
+}
+
+string Individual::toString()
+{
+    stringstream ss;
+    
+    ss << "Fitness = " << fitness << endl;
+    ss << "Reglas = " << numRules << endl;
+    ss << rules << endl;
+    
+    return ss.str();
 }

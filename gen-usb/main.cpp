@@ -6,12 +6,9 @@
 //  Copyright (c) 2013 Jenny Valdez & Luis Vieira. All rights reserved.
 //
 
-#include <iostream>
 #include <fstream>
-#include <sstream>
-#include <bitset>
 #include "stringHelper.h"
-#include "individual.h"
+#include "geneticAlgorithm.h"
 
 using namespace std;
 
@@ -246,17 +243,9 @@ void takeDataPercent(int percent)
     
     int awayData = ((100 - percent) * (int)testCases.size()) / 100;
     
-    int pos = 0;
-    
     for (int i = 0; i < awayData; i++)
     {
-        int index = i % 2;
-        
-        if (index == 0) {
-            pos += 1;
-        }
-        
-        index = firstMatch(index);
+        int index = firstMatch(i % 2);
         
         trainingCases.push_back(testCases[index]);
         testCases.erase(testCases.begin() + index);
@@ -271,20 +260,15 @@ void takeDataPercent(int percent)
 
 int main(int argc, char * argv[])
 {
-    unsigned int seed = (unsigned int)chrono::system_clock::now().time_since_epoch().count();
-    srand(seed);
+    srand((unsigned int)chrono::system_clock::now().time_since_epoch().count());
     
     readFile("crx.data.txt");
-    
     
     takeDataPercent(40);
     
     trainingExamples = trainingCases;
     
-    for (int i = 0; i != 100; ++i) {
-        
-        Individual ind;
-    }
+    geneticAlgorithm(1000);
     
     return 0;
 }

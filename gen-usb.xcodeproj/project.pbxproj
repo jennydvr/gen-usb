@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0007089B16E6770B00A3533C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0007089A16E6770B00A3533C /* main.cpp */; };
 		0077238416E9459E00D36D53 /* individual.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0077238216E9459E00D36D53 /* individual.cpp */; };
+		0092AFF916EA43F000FDB9F8 /* geneticAlgorithm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0092AFF716EA43F000FDB9F8 /* geneticAlgorithm.cpp */; };
 		00DBF7AD16E7A5F60048EC6A /* stringHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00DBF7AB16E7A5A80048EC6A /* stringHelper.cpp */; };
 /* End PBXBuildFile section */
 
@@ -29,6 +30,8 @@
 		0007089A16E6770B00A3533C /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		0077238216E9459E00D36D53 /* individual.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = individual.cpp; sourceTree = "<group>"; };
 		0077238316E9459E00D36D53 /* individual.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = individual.h; sourceTree = "<group>"; };
+		0092AFF716EA43F000FDB9F8 /* geneticAlgorithm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = geneticAlgorithm.cpp; sourceTree = "<group>"; };
+		0092AFF816EA43F000FDB9F8 /* geneticAlgorithm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = geneticAlgorithm.h; sourceTree = "<group>"; };
 		00DBF7AB16E7A5A80048EC6A /* stringHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = stringHelper.cpp; sourceTree = "<group>"; };
 		00DBF7AC16E7A5A80048EC6A /* stringHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stringHelper.h; sourceTree = "<group>"; };
 		00DBF7AE16E7D3A90048EC6A /* crx.data.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = crx.data.txt; sourceTree = "<group>"; };
@@ -70,6 +73,8 @@
 				0007089A16E6770B00A3533C /* main.cpp */,
 				0077238216E9459E00D36D53 /* individual.cpp */,
 				0077238316E9459E00D36D53 /* individual.h */,
+				0092AFF716EA43F000FDB9F8 /* geneticAlgorithm.cpp */,
+				0092AFF816EA43F000FDB9F8 /* geneticAlgorithm.h */,
 			);
 			path = "gen-usb";
 			sourceTree = "<group>";
@@ -128,6 +133,7 @@
 				0007089B16E6770B00A3533C /* main.cpp in Sources */,
 				00DBF7AD16E7A5F60048EC6A /* stringHelper.cpp in Sources */,
 				0077238416E9459E00D36D53 /* individual.cpp in Sources */,
+				0092AFF916EA43F000FDB9F8 /* geneticAlgorithm.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

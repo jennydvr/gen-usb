@@ -15,7 +15,11 @@
 #include <sstream>
 #include <random>
 
-#define PENALTY 0
+#define PSIZE 0.0
+#define PONES 0.005
+#define RULESIZE 66
+#define MINRULES 2
+#define MAXRULES 15
 
 extern std::vector<std::bitset<66>> trainingExamples;
 
@@ -32,19 +36,37 @@ protected:
     // Reglas que contiene el individuo
     std::string rules;
     
-    // Chequea si esta regla admite el ejemplo dado
+    // Chequea si el individuo admite el ejemplo dado
     int matches(std::bitset<66> example);
     
-    // Crea una regla
+    // Crea una regla aleatoria
     std::string createRule(int type);
+    
+    // Calcula el fitness
+    void calculateFitness();
+    
+    // Cruza dos individuos con crossover de dos puntos
+    static std::vector<Individual> twoPointCrossover(Individual &mom, Individual &dad);
     
 public:
     
     // Constructor aleatorio
     Individual();
     
+    // Constructor con regla
+    Individual(std::string r);
+    
     // Retorna el fitness de este individuo
     float getFitness();
+    
+    // Muta el individuo con una mutacion puntual
+    void mutate();
+    
+    // Cruza dos individuos
+    static std::vector<Individual> crossover(Individual &p1, Individual &p2);
+    
+    // Imprime este individuo
+    std::string toString();
     
 };
 
