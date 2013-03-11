@@ -15,11 +15,10 @@
 #include <sstream>
 #include <random>
 
-#define PSIZE 0.0
-#define PONES 0.005
+#define PSIZE 0.2
 #define RULESIZE 66
-#define MINRULES 2
-#define MAXRULES 15
+#define MINRULES 1
+#define MAXRULES 10
 
 extern std::vector<std::bitset<66>> trainingExamples;
 
@@ -33,11 +32,11 @@ protected:
     // Fitness del individuo
     float fitness;
     
+    // Porcentaje de ejemplos hace match el individuo
+    float classified;
+    
     // Reglas que contiene el individuo
     std::string rules;
-    
-    // Chequea si el individuo admite el ejemplo dado
-    int matches(std::bitset<66> example);
     
     // Crea una regla aleatoria
     std::string createRule(int type);
@@ -67,6 +66,11 @@ public:
     
     // Imprime este individuo
     std::string toString();
+    
+    
+    
+    // Chequea si el individuo admite el ejemplo dado
+    int matches(std::bitset<66> example);
     
 };
 

@@ -48,43 +48,40 @@ string Individual::createRule(int type)
 
 void Individual::calculateFitness()
 {
-    fitness = 0;
+    // Calculo el % de ejemplos clasificados
+    classified = 0;
     
     for (int i = 0; i != trainingExamples.size(); ++i)
-        fitness += matches(trainingExamples[i]);
+        classified += (float)matches(trainingExamples[i]);
     
-    // Fitness = (% correctos) ^ 2
-    fitness = fitness * 100.0 / (float)trainingExamples.size();
-    fitness = fitness * fitness;
+    classified = classified * 100.0 / (float)trainingExamples.size();
     
-    // Penalizar
-    fitness -= PSIZE * numRules;    // Tamano
+    // Fitness = (% clasificados correctamente) ^ 2
+    fitness = classified * classified;
     
-    for (int i = 0; i != numRules; ++i) {
-        string ss = rules.substr(i * RULESIZE, RULESIZE - 1);
-        fitness -= PONES * (float)count(ss.begin(), ss.end(), '1') * 100 / (float)RULESIZE;  // Unos
-    }
+    // Penalizar tamano
+    fitness -= numRules > 50 ? PSIZE * (numRules - 50) * 100 / 50 : 0;
 }
 
 int Individual::matches(bitset<66> example)
 {
-    int count = 0;
+    int someoneMatched = 0;
     
     for (int i = 0; i != numRules; ++i) {
-        bitset<66> rule = bitset<66>(rules.substr(i * RULESIZE, RULESIZE));
+        bitset<RULESIZE> rule = bitset<RULESIZE>(rules.substr(i * RULESIZE, RULESIZE));
+        
+        // E[n] == 1 => R[n] == 1
+        if (((int)(~example | rule).count() - (int)(~example[0] | rule[0])) < RULESIZE - 1)
+            continue;
         
         // No considerar las reglas que no clasifiquen a lo mismo
         if (rule[0] != example[0])
-            continue;
-        
-        // E[n] == 1 => R[n] == 1
-        if ((int)(~example | rule).count() != RULESIZE)
             return 0;
         
-        count = 1;
+        someoneMatched = 1;
     }
     
-    return count;
+    return someoneMatched;
 }
 
 float Individual::getFitness()
@@ -100,6 +97,8 @@ void Individual::mutate()
     // Mutacion puntual
     int ind = rand() % rules.size();
     rules[ind] = rules[ind] == '0' ? '1' : '0';
+    
+    fitness = numeric_limits<float>::min();
 }
 
 vector<Individual> Individual::crossover(Individual &p1, Individual &p2)
@@ -153,8 +152,11 @@ string Individual::toString()
     stringstream ss;
     
     ss << "Fitness = " << fitness << endl;
+    ss << "Clasificados = " << classified << endl;
     ss << "Reglas = " << numRules << endl;
-    ss << rules << endl;
+    
+    //for (int i = 0; i != numRules; ++i)
+    //    ss << "    " << rules.substr(i * RULESIZE, RULESIZE) << endl;
     
     return ss.str();
 }

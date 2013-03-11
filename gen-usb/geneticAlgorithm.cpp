@@ -8,7 +8,7 @@
 
 #include "geneticAlgorithm.h"
 
-#define POPSIZE 500
+#define POPSIZE 100
 
 using namespace std;
 
@@ -56,25 +56,47 @@ vector<Individual> tournamentSelection(vector<Individual> population, int size)
             a = b;
         
         newPopulation.push_back(population[a]);
-        population.erase(population.begin() + a);
+        
+        // Elimino al individuo que acabo de utilizar
+        swap(population[a], population.back());
+        population.pop_back();
     }
     
     return newPopulation;
 }
 
+// NO PROBADO
 vector<Individual> rouletteSelection(vector<Individual> population, int size)
 {
     vector<Individual> newPopulation;
     
+    // Sumar los fitness
+    float sum = 0;
+    for (int i = 0; i != population.size(); ++i)
+        sum += population[i].getFitness();
+    
+    // Ordenar la poblacion
     stable_sort(population.begin(), population.end(), compareFitness);
-    float max = population.back().getFitness();
     
     while (newPopulation.size() != size)
     {
-        int pos = binarySearch(population, (float)rand()/((float)RAND_MAX/max));
+        float prob = (float)rand()/((float)RAND_MAX/sum);
+        float acc = 0;
         
-        newPopulation.push_back(population[pos]);
-        population.erase(population.begin() + pos);
+        for (int i = 0; i != population.size(); ++i) {
+            acc += population[i].getFitness();
+            
+            if (acc >= prob)
+            {
+                // Agrego el individuo
+                newPopulation.push_back(population[i]);
+                
+                // Lo elimino de las opciones
+                sum -= population[i].getFitness();
+                swap(population[i], population.back());
+                population.pop_back();
+            }
+        }
     }
     
     return newPopulation;
@@ -110,7 +132,7 @@ Individual geneticAlgorithm(int epochs)
         if (np % 2 != 0)
             np += 1;
         
-        vector<Individual> parents = rouletteSelection(population, np);
+        vector<Individual> parents = tournamentSelection(population, np);
         
         // Crossover
         vector<Individual> offspring;
