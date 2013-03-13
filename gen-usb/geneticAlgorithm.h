@@ -9,7 +9,7 @@
 #ifndef __gen_usb__geneticAlgorithm__
 #define __gen_usb__geneticAlgorithm__
 
-#include "individual.h"
+#include "utilities.h"
 
 extern Individual geneticAlgorithm(int epochs);
 

@@ -17,10 +17,18 @@
 
 #define PSIZE 0.2
 #define RULESIZE 66
+#define NUMFEATURES 16
 #define MINRULES 1
 #define MAXRULES 10
 
-extern std::vector<std::bitset<66>> trainingExamples;
+// Ejemplos para el calculo del fitness
+static std::vector<std::bitset<66>> trainingExamples;
+
+// Tamano de cada caracteristica en la regla
+static int FEATURESIZE[16] = {2, 5, 5, 4, 3, 14, 9, 4, 2, 2, 2, 2, 3, 4, 3, 2};
+
+// Comienzo de cada feature en la regla
+static int FEATUREINDEXES[16] = {0, 2, 7, 12, 16, 19, 33, 42, 46, 48, 50, 52, 54, 57, 61, 64};
 
 class Individual {
 
@@ -47,6 +55,9 @@ protected:
     // Cruza dos individuos con crossover de dos puntos
     static std::vector<Individual> twoPointCrossover(Individual &mom, Individual &dad);
     
+    // Chequea si el individuo admite el ejemplo dado
+    int matches(std::bitset<66> example);
+    
 public:
     
     // Constructor aleatorio
@@ -64,14 +75,14 @@ public:
     // Cruza dos individuos
     static std::vector<Individual> crossover(Individual &p1, Individual &p2);
     
+    // Operador add alternative
+    void addAlternative();
+    
+    // Operador drop condition
+    void dropCondition();
+    
     // Imprime este individuo
     std::string toString();
-    
-    
-    
-    // Chequea si el individuo admite el ejemplo dado
-    int matches(std::bitset<66> example);
-    
 };
 
 #endif /* defined(__gen_usb__individual__) */

@@ -15,88 +15,74 @@ using namespace std;
 float crossoverRate = 0.25;
 float mutationRate = 0.25;
 
-bool compareFitness(Individual x, Individual y)
-{
-    return x.getFitness() < y.getFitness();
-}
-
-int binarySearch(vector<Individual>& vec, float key)
-{
-    int end = (int)vec.size() - 1, start = 0;
-    
-    while (end >= start)
-    {
-        int mid = start + ((end - start) / 2);
-        
-        if (vec[mid].getFitness() < key)
-            start = mid + 1;
-        else
-            return mid;
-    }
-    
-    // si no hay ni un caso que coincida, retorna cuaquier cosa
-    return rand() % vec.size();
-}
-
-vector<Individual> tournamentSelection(vector<Individual> population, int size)
+vector<Individual> tournamentSelection(vector<Individual> &population, int size)
 {
     vector<Individual> newPopulation;
+    
+    vector<int> indexes;
+    for (int i = 0; i != population.size(); ++i)
+        indexes.push_back(i);
     
     while (newPopulation.size() != size)
     {
         // Selecciono dos individuos aleatorios
-        int a = rand() % population.size();
-        int b = rand() % (population.size() - 1);
+        int a = rand() % indexes.size();
+        int b = rand() % (indexes.size() - 1);
         
         if (b == a)
             ++b;
         
         // Seleccionar al mejor entre a y b
-        if (population[a].getFitness() < population[b].getFitness())
+        if (population[indexes[a]].getFitness() < population[indexes[b]].getFitness())
             a = b;
         
-        newPopulation.push_back(population[a]);
+        newPopulation.push_back(population[indexes[a]]);
         
         // Elimino al individuo que acabo de utilizar
-        swap(population[a], population.back());
-        population.pop_back();
+        swap(indexes[a], indexes.back());
+        indexes.pop_back();
     }
     
     return newPopulation;
 }
 
-// NO PROBADO
 vector<Individual> rouletteSelection(vector<Individual> population, int size)
 {
     vector<Individual> newPopulation;
     
-    // Sumar los fitness
+    // Ordenar la poblacion
+    sort(population.begin(), population.end(), compareFitness);
+    
+    // Guardar los fitness acumulados y calcular el fitness total
+    vector<float> accFitness;
     float sum = 0;
-    for (int i = 0; i != population.size(); ++i)
+    
+    for (int i = (int)population.size() - 1; i != 0; --i) {
         sum += population[i].getFitness();
+        accFitness.push_back(sum);
+    }
+    
+    while (newPopulation.size() != size)
+    {
+        float prob = (float)rand()/((float)RAND_MAX/sum);
+        int index = specialBinarySearch(accFitness, prob);
+        newPopulation.push_back(population[population.size() - 1 - index]);
+    }
+    
+    return newPopulation;
+}
+
+vector<Individual> elitismSelection(vector<Individual> population, int size)
+{
+    vector<Individual> newPopulation;
     
     // Ordenar la poblacion
     stable_sort(population.begin(), population.end(), compareFitness);
     
     while (newPopulation.size() != size)
     {
-        float prob = (float)rand()/((float)RAND_MAX/sum);
-        float acc = 0;
-        
-        for (int i = 0; i != population.size(); ++i) {
-            acc += population[i].getFitness();
-            
-            if (acc >= prob)
-            {
-                // Agrego el individuo
-                newPopulation.push_back(population[i]);
-                
-                // Lo elimino de las opciones
-                sum -= population[i].getFitness();
-                swap(population[i], population.back());
-                population.pop_back();
-            }
-        }
+        newPopulation.push_back(population.back());
+        population.pop_back();
     }
     
     return newPopulation;
@@ -122,6 +108,11 @@ Individual geneticAlgorithm(int epochs)
     vector<Individual> population;
     for (int i = 0; i != POPSIZE; ++i)
         population.push_back(Individual());
+    
+    
+    vector<Individual> n = tournamentSelection(population, 10);
+    
+    return Individual();
     
     for (int e = 0; e != epochs && findBest(population).getFitness() < 10000; ++e)
     {

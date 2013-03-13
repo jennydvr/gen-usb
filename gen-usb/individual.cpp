@@ -10,15 +10,12 @@
 
 using namespace std;
 
-vector<bitset<66>> trainingExamples;
-
 Individual::Individual()
 {
     // Creo x reglas aleatorias
     numRules = rand() % (MAXRULES - MINRULES + 1) + MINRULES;
-    
-    stringstream ss;
     int init = rand() % 2;
+    stringstream ss;
     
     for (int i = 0; i != numRules; ++i)
         ss << createRule((i + init) % 2);
@@ -51,7 +48,7 @@ void Individual::calculateFitness()
     // Calculo el % de ejemplos clasificados
     classified = 0;
     
-    for (int i = 0; i != trainingExamples.size(); ++i)
+    for (int i = 0; i != (int)trainingExamples.size(); ++i)
         classified += (float)matches(trainingExamples[i]);
     
     classified = classified * 100.0 / (float)trainingExamples.size();
@@ -147,6 +144,80 @@ vector<Individual> Individual::twoPointCrossover(Individual &mom, Individual &da
     return offspring;
 }
 
+void Individual::addAlternative()
+{
+    // Crear un vector que almacene las reglas de forma aleatoria
+    vector<int> sr;
+    for (int i = 0; i != numRules; ++i)
+        sr.push_back(i);
+    random_shuffle(sr.begin(), sr.end());
+    
+    // Crear un vector que haga aleatorias los features de la regla
+    vector<int> sf;
+    for (int i = 0; i != NUMFEATURES - 1; ++i)
+        sf.push_back(i);
+    random_shuffle(sf.begin(), sf.end());
+    
+    
+    
+    // Tratar de agregar una alternativa a alguna regla
+    for (int i = 0; i != numRules; ++i) {
+        string rule = rules.substr(sr[i] * RULESIZE, RULESIZE);
+        
+        // Agarro cada conjunto de bits que forman un feature
+        for (int j = 0; j != 15; ++j) {
+            string feature = rule.substr(FEATUREINDEXES[sf[j]], FEATURESIZE[sf[j]]);
+            
+            // Al primer feature que encuentre valido, le cambio un bit
+            if (count(feature.begin(), feature.end(), '1') < feature.size() - 1)
+            {
+                for (int k = 0; k != FEATURESIZE[sf[j]]; ++k)
+                    if (feature[k] == '0')
+                        rules[sr[i] * RULESIZE + FEATUREINDEXES[sf[j]] + k] = '1';
+                
+                return;
+            }
+        }
+    }
+}
+
+void Individual::dropCondition()
+{
+    // Crear un vector que almacene las reglas de forma aleatoria
+    vector<int> sr;
+    for (int i = 0; i != numRules; ++i)
+        sr.push_back(i);
+    random_shuffle(sr.begin(), sr.end());
+    
+    // Crear un vector que haga aleatorias los features de la regla
+    vector<int> sf;
+    for (int i = 0; i != NUMFEATURES - 1; ++i)
+        sf.push_back(i);
+    random_shuffle(sf.begin(), sf.end());
+    
+    
+    
+    // Tratar de agregar una alternativa a alguna regla
+    for (int i = 0; i != numRules; ++i) {
+        string rule = rules.substr(sr[i] * RULESIZE, RULESIZE);
+        
+        // Agarro cada conjunto de bits que forman un feature
+        for (int j = 0; j != 15; ++j) {
+            string feature = rule.substr(FEATUREINDEXES[sf[j]], FEATURESIZE[sf[j]]);
+            
+            // Al primer feature que encuentre valido, le cambio un bit
+            if (count(feature.begin(), feature.end(), '1') == feature.size() - 1)
+            {
+                for (int k = 0; k != FEATURESIZE[sf[j]]; ++k)
+                    if (feature[k] == '0')
+                        rules[sr[i] * RULESIZE + FEATUREINDEXES[sf[j]] + k] = '1';
+                
+                return;
+            }
+        }
+    }
+}
+
 string Individual::toString()
 {
     stringstream ss;
@@ -155,8 +226,10 @@ string Individual::toString()
     ss << "Clasificados = " << classified << endl;
     ss << "Reglas = " << numRules << endl;
     
-    //for (int i = 0; i != numRules; ++i)
-    //    ss << "    " << rules.substr(i * RULESIZE, RULESIZE) << endl;
+    /*
+    for (int i = 0; i != numRules; ++i)
+        ss << "    " << rules.substr(i * RULESIZE, RULESIZE) << endl;
+    */
     
     return ss.str();
 }
