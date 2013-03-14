@@ -261,7 +261,7 @@ void takeDataPercent(int percent)
 int main(int argc, char * argv[])
 {
     srand((unsigned int)chrono::system_clock::now().time_since_epoch().count());
-    
+    //srand((unsigned)time(0));
     readFile("crx.data.txt");
     
     takeDataPercent(40);

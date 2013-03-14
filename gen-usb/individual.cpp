@@ -61,7 +61,7 @@ void Individual::calculateFitness()
     fitness = classified * classified;
     
     // Penalizar tamano
-    fitness -= numRules > 50 ? PSIZE * (numRules - 50) * 100 / 50 : 0;
+    fitness -= numRules > MAXPSIZE ? PSIZE * (numRules - MAXPSIZE) * 100 / MAXPSIZE : 0;
 }
 
 int Individual::matches(bitset<66> example)

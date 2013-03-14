@@ -15,7 +15,8 @@
 #include <sstream>
 #include <random>
 
-#define PSIZE 0
+#define PSIZE 2
+#define MAXPSIZE 50
 #define RULESIZE 66
 #define NUMFEATURES 16
 #define MINRULES 1

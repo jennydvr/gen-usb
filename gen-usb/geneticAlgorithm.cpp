@@ -59,28 +59,32 @@ vector<Individual> rouletteSelection(vector<Individual> population, int size)
     }
     
     // Ordenar la poblacion
-    mergeSort(population, 0, (int)population.size() - 1);
-    
+    //mergeSort(population, 0, (int)population.size() - 1);
+    bool takeone = false;
     while (newPopulation.size() != size)
-    {
+    {   
+        takeone = false;
         float prob = (float)rand()/((float)RAND_MAX/sum);
         float aux = 0;
-        
-        cout << prob << endl;
-        
+                
         for (int i = (int)indexes.size() - 1; i != -1; --i) {
             aux += population[indexes[i]].getFitness();
             
-            
-            cout << aux << endl;
             
             if (aux >= prob) {
                 newPopulation.push_back(population[indexes[i]]);
                 
                 sum -= population[indexes[i]].getFitness();
                 indexes.erase(indexes.begin() + i);
+                takeone = true;
                 break;
             }
+            
+        }
+        if (!takeone) {
+            newPopulation.push_back(population.back());
+            sum -= population.back().getFitness();
+            indexes.pop_back();
         }
     }
     
