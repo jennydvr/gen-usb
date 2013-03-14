@@ -59,8 +59,9 @@ vector<Individual> rouletteSelection(vector<Individual> population, int size)
     }
     
     // Ordenar la poblacion
-    //mergeSort(population, 0, (int)population.size() - 1);
+    mergeSort(population, 0, (int)population.size() - 1);
     bool takeone = false;
+    
     while (newPopulation.size() != size)
     {   
         takeone = false;
@@ -82,8 +83,8 @@ vector<Individual> rouletteSelection(vector<Individual> population, int size)
             
         }
         if (!takeone) {
-            newPopulation.push_back(population.back());
-            sum -= population.back().getFitness();
+            newPopulation.push_back(population[indexes.back()]);
+            sum -= population[indexes.back()].getFitness();
             indexes.pop_back();
         }
     }
@@ -143,10 +144,11 @@ Individual geneticAlgorithm(int epochs)
     for (int i = 0; i != POPSIZE; ++i)
         population.push_back(Individual());
     
-    for (int e = 0; e != epochs && findBest(population).getFitness() < 10000; ++e)
+    Individual best = findBest(population);
+    
+    for (int e = 0; e != epochs; ++e)
     {
-        cout << e << "\n" << findBest(population).toString() << "\n\n";
-        
+        cout << best.getFitness() << endl;
         // Seleccion de padres
         int np = crossoverRate * POPSIZE;
         if (np % 2 != 0)
@@ -172,10 +174,11 @@ Individual geneticAlgorithm(int epochs)
         for (int i = 0; i != offspring.size(); ++i)
             population.push_back(offspring[i]);
         
-        population = rouletteSelection(population, POPSIZE);
+        population = elitismSelection(population, POPSIZE);
+        best = findBest(population);
     }
     
-    cout << findBest(population).toString() << "\n\n";
+    cout << best.getFitness() << endl;
     
     // Retornar el mejor individuo
     return findBest(population);

@@ -261,14 +261,24 @@ void takeDataPercent(int percent)
 int main(int argc, char * argv[])
 {
     srand((unsigned int)chrono::system_clock::now().time_since_epoch().count());
-    //srand((unsigned)time(0));
+    
     readFile("crx.data.txt");
     
     takeDataPercent(40);
     
     trainingExamples = trainingCases;
     
-    geneticAlgorithm(500);
+    time_t start = time(NULL);
+    
+    Individual best = geneticAlgorithm(1000);
+    
+    time_t diff = time(NULL) - start;
+    
+    // Imprimir resultados
+    cout << best.toString() << endl;
+    cout << "entrenamiento = " << best.matchesPercent(trainingCases) << endl;
+    cout << "prueba = " << best.matchesPercent(testCases) << endl;
+    cout << "tiempo = " << diff << endl;
     
     return 0;
 }

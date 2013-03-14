@@ -35,6 +35,17 @@ Individual::Individual(string r)
     fitness = classified = numeric_limits<float>::min();
 }
 
+float Individual::matchesPercent(std::vector<std::bitset<66>> cases)
+{
+    // Calculo el % de ejemplos clasificados
+    float correct = 0;
+    
+    for (int i = 0; i != (int)cases.size(); ++i)
+        correct += (float)matches(cases[i]);
+    
+    return correct * 100.0 / (float)cases.size();
+}
+
 string Individual::createRule(int type)
 {
     stringstream ss;

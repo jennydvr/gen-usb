@@ -67,6 +67,9 @@ public:
     // Constructor con regla
     Individual(std::string r);
     
+    // Cuenta con cuantos de estos ejemplos hace match, en porcentaje
+    float matchesPercent(std::vector<std::bitset<66>> cases);
+    
     // Retorna el fitness de este individuo
     float getFitness();
     
