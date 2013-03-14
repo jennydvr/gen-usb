@@ -268,7 +268,7 @@ int main(int argc, char * argv[])
     
     trainingExamples = trainingCases;
     
-    geneticAlgorithm(1000);
+    geneticAlgorithm(500);
     
     return 0;
 }

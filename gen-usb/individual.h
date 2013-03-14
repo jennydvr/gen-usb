@@ -15,20 +15,20 @@
 #include <sstream>
 #include <random>
 
-#define PSIZE 0.2
+#define PSIZE 0
 #define RULESIZE 66
 #define NUMFEATURES 16
 #define MINRULES 1
-#define MAXRULES 10
+#define MAXRULES 5
 
 // Ejemplos para el calculo del fitness
-static std::vector<std::bitset<66>> trainingExamples;
+extern std::vector<std::bitset<66>> trainingExamples;
 
 // Tamano de cada caracteristica en la regla
-static int FEATURESIZE[16] = {2, 5, 5, 4, 3, 14, 9, 4, 2, 2, 2, 2, 3, 4, 3, 2};
+extern int FEATURESIZE[16];
 
 // Comienzo de cada feature en la regla
-static int FEATUREINDEXES[16] = {0, 2, 7, 12, 16, 19, 33, 42, 46, 48, 50, 52, 54, 57, 61, 64};
+extern int FEATUREINDEXES[16];
 
 class Individual {
 
@@ -36,9 +36,6 @@ protected:
     
     // Numero de reglas
     int numRules;
-    
-    // Fitness del individuo
-    float fitness;
     
     // Porcentaje de ejemplos hace match el individuo
     float classified;
@@ -59,6 +56,9 @@ protected:
     int matches(std::bitset<66> example);
     
 public:
+    
+    // Fitness del individuo
+    float fitness;
     
     // Constructor aleatorio
     Individual();

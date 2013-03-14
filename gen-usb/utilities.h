@@ -11,7 +11,14 @@
 
 #include "individual.h"
 
-bool compareFitness(Individual x, Individual y);
+// Busqueda binaria de acuerdo al fitness <= key
 int specialBinarySearch(std::vector<float> vec, float key);
+
+// Mergesort de acuerdo al fitness
+void mergeSort(std::vector<Individual>& v, int start, int end);
+
+
+// Mergesort de acuerdo al fitness relativo
+void mergeSort(std::vector<Individual>& v, int start, int end, float sum);
 
 #endif /* defined(__gen_usb__utilities__) */

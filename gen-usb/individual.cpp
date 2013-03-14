@@ -10,6 +10,10 @@
 
 using namespace std;
 
+vector<bitset<66>> trainingExamples;
+int FEATURESIZE[16] = {2, 5, 5, 4, 3, 14, 9, 4, 2, 2, 2, 2, 3, 4, 3, 2};
+int FEATUREINDEXES[16] = {0, 2, 7, 12, 16, 19, 33, 42, 46, 48, 50, 52, 54, 57, 61, 64};
+
 Individual::Individual()
 {
     // Creo x reglas aleatorias
@@ -21,14 +25,14 @@ Individual::Individual()
         ss << createRule((i + init) % 2);
     
     rules = ss.str();
-    fitness = numeric_limits<float>::min();
+    fitness = classified = numeric_limits<float>::min();
 }
 
 Individual::Individual(string r)
 {
     rules = r;
     numRules = (int)rules.size() / RULESIZE;
-    fitness = numeric_limits<float>::min();
+    fitness = classified = numeric_limits<float>::min();
 }
 
 string Individual::createRule(int type)
@@ -94,8 +98,7 @@ void Individual::mutate()
     // Mutacion puntual
     int ind = rand() % rules.size();
     rules[ind] = rules[ind] == '0' ? '1' : '0';
-    
-    fitness = numeric_limits<float>::min();
+    fitness = classified = numeric_limits<float>::min();
 }
 
 vector<Individual> Individual::crossover(Individual &p1, Individual &p2)
@@ -175,6 +178,7 @@ void Individual::addAlternative()
                     if (feature[k] == '0')
                         rules[sr[i] * RULESIZE + FEATUREINDEXES[sf[j]] + k] = '1';
                 
+                fitness = classified = numeric_limits<float>::min();
                 return;
             }
         }
@@ -212,6 +216,7 @@ void Individual::dropCondition()
                     if (feature[k] == '0')
                         rules[sr[i] * RULESIZE + FEATUREINDEXES[sf[j]] + k] = '1';
                 
+                fitness = classified = numeric_limits<float>::min();
                 return;
             }
         }

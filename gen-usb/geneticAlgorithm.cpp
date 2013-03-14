@@ -50,40 +50,70 @@ vector<Individual> rouletteSelection(vector<Individual> population, int size)
 {
     vector<Individual> newPopulation;
     
-    // Ordenar la poblacion
-    sort(population.begin(), population.end(), compareFitness);
-    
-    // Guardar los fitness acumulados y calcular el fitness total
-    vector<float> accFitness;
+    // Calcular el fitness total
+    vector<int> indexes;
     float sum = 0;
-    
-    for (int i = (int)population.size() - 1; i != 0; --i) {
+    for (int i = 0; i != (int)population.size(); ++i) {
         sum += population[i].getFitness();
-        accFitness.push_back(sum);
+        indexes.push_back(i);
     }
+    
+    // Ordenar la poblacion
+    mergeSort(population, 0, (int)population.size() - 1);
     
     while (newPopulation.size() != size)
     {
         float prob = (float)rand()/((float)RAND_MAX/sum);
-        int index = specialBinarySearch(accFitness, prob);
-        newPopulation.push_back(population[population.size() - 1 - index]);
+        float aux = 0;
+        
+        cout << prob << endl;
+        
+        for (int i = (int)indexes.size() - 1; i != -1; --i) {
+            aux += population[indexes[i]].getFitness();
+            
+            
+            cout << aux << endl;
+            
+            if (aux >= prob) {
+                newPopulation.push_back(population[indexes[i]]);
+                
+                sum -= population[indexes[i]].getFitness();
+                indexes.erase(indexes.begin() + i);
+                break;
+            }
+        }
     }
     
     return newPopulation;
 }
 
-vector<Individual> elitismSelection(vector<Individual> population, int size)
+vector<Individual> rankingSelection(vector<Individual> population, int size)
+{
+    vector<Individual> newPopulation;
+    
+    // Calcular el fitness total
+    float sum = 0;
+    for (int i = 0; i != (int)population.size(); ++i)
+        sum += population[i].getFitness();
+    
+    // Ordenar la poblacion por fitness relativo
+    mergeSort(population, 0, (int)population.size() - 1, sum);
+    
+    for (int i = (int)population.size() - 1; i != (int)population.size() - 1 - size; --i)
+        newPopulation.push_back(population[i]);
+    
+    return newPopulation;
+}
+
+vector<Individual> elitismSelection(vector<Individual> &population, int size)
 {
     vector<Individual> newPopulation;
     
     // Ordenar la poblacion
-    stable_sort(population.begin(), population.end(), compareFitness);
+    mergeSort(population, 0, (int)population.size() - 1);
     
-    while (newPopulation.size() != size)
-    {
-        newPopulation.push_back(population.back());
-        population.pop_back();
-    }
+    for (int i = (int)population.size() - 1; i != (int)population.size() - 1 - size; --i)
+        newPopulation.push_back(population[i]);
     
     return newPopulation;
 }
@@ -109,11 +139,6 @@ Individual geneticAlgorithm(int epochs)
     for (int i = 0; i != POPSIZE; ++i)
         population.push_back(Individual());
     
-    
-    vector<Individual> n = tournamentSelection(population, 10);
-    
-    return Individual();
-    
     for (int e = 0; e != epochs && findBest(population).getFitness() < 10000; ++e)
     {
         cout << e << "\n" << findBest(population).toString() << "\n\n";
@@ -123,7 +148,7 @@ Individual geneticAlgorithm(int epochs)
         if (np % 2 != 0)
             np += 1;
         
-        vector<Individual> parents = tournamentSelection(population, np);
+        vector<Individual> parents = rouletteSelection(population, np);
         
         // Crossover
         vector<Individual> offspring;
@@ -143,7 +168,7 @@ Individual geneticAlgorithm(int epochs)
         for (int i = 0; i != offspring.size(); ++i)
             population.push_back(offspring[i]);
         
-        population = tournamentSelection(population, POPSIZE);
+        population = rouletteSelection(population, POPSIZE);
     }
     
     cout << findBest(population).toString() << "\n\n";
