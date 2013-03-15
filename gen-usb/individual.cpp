@@ -240,7 +240,7 @@ string Individual::toString()
     
     ss << "Fitness = " << fitness << endl;
     //ss << "Clasificados = " << classified << endl;
-    ss << "Reglas = " << numRules << endl;
+    ss << "Reglas = " << numRules;
     
     /*
     for (int i = 0; i != numRules; ++i)
