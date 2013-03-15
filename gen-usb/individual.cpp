@@ -239,7 +239,7 @@ string Individual::toString()
     stringstream ss;
     
     ss << "Fitness = " << fitness << endl;
-    ss << "Clasificados = " << classified << endl;
+    //ss << "Clasificados = " << classified << endl;
     ss << "Reglas = " << numRules << endl;
     
     /*

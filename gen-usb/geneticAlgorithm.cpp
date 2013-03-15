@@ -12,8 +12,8 @@
 
 using namespace std;
 
-float crossoverRate = 0.25;
-float mutationRate = 0.25;
+float crossoverRate = 0.5;
+float mutationRate = 0.5;
 
 vector<Individual> tournamentSelection(vector<Individual> &population, int size)
 {
@@ -144,17 +144,14 @@ Individual geneticAlgorithm(int epochs)
     for (int i = 0; i != POPSIZE; ++i)
         population.push_back(Individual());
     
-    Individual best = findBest(population);
-    
     for (int e = 0; e != epochs; ++e)
     {
-        cout << best.getFitness() << endl;
         // Seleccion de padres
         int np = crossoverRate * POPSIZE;
         if (np % 2 != 0)
             np += 1;
         
-        vector<Individual> parents = rouletteSelection(population, np);
+        vector<Individual> parents = tournamentSelection(population, np);
         
         // Crossover
         vector<Individual> offspring;
@@ -170,15 +167,24 @@ Individual geneticAlgorithm(int epochs)
         for (int i = 0; i != maxMutation; ++i)
             offspring[i].mutate();
         
+        // Add alternative
+        random_shuffle(offspring.begin(), offspring.end());
+        int maxAlternative = mutationRate * offspring.size();
+        for (int i = 0; i != maxAlternative; ++i)
+            offspring[i].addAlternative();
+        
+        // Drop condition
+        random_shuffle(offspring.begin(), offspring.end());
+        int maxDrop = mutationRate * offspring.size();
+        for (int i = 0; i != maxDrop; ++i)
+            offspring[i].dropCondition();
+        
         // Seleccion de sobrevivientes
         for (int i = 0; i != offspring.size(); ++i)
             population.push_back(offspring[i]);
         
-        population = elitismSelection(population, POPSIZE);
-        best = findBest(population);
+        population = rankingSelection(population, POPSIZE);
     }
-    
-    cout << best.getFitness() << endl;
     
     // Retornar el mejor individuo
     return findBest(population);

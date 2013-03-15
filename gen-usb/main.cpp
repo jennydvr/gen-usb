@@ -276,9 +276,9 @@ int main(int argc, char * argv[])
     
     // Imprimir resultados
     cout << best.toString() << endl;
-    cout << "entrenamiento = " << best.matchesPercent(trainingCases) << endl;
-    cout << "prueba = " << best.matchesPercent(testCases) << endl;
-    cout << "tiempo = " << diff << endl;
+    cout << "Entrenamiento = " << best.matchesPercent(trainingCases) << endl;
+    cout << "Prueba = " << best.matchesPercent(testCases) << endl;
+    cout << "Tiempo = " << diff << endl;
     
     return 0;
 }
